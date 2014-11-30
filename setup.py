@@ -6,15 +6,15 @@ from distutils.core import setup
 #     sys.exit('Python 2.5 or higher is required')
 
 setup(name='pysectools',
-      version='0.1.0',
+      version='0.2.0',
       description="""Various security-related functions""",
 #      long_description="""""",
       license='WTFPL',
-      author='myfreeweb',
-      author_email='floatboth@me.com',
+      author='Greg V',
+      author_email='greg@unrelenting.technology',
       url='https://github.com/myfreeweb/pysectools',
       packages=['pysectools'],
-      keywords=['security'],
+      keywords=['security', 'pinentry', 'getpass', 'capsicum'],
       classifiers=[
           'Operating System :: POSIX',
           'Intended Audience :: Developers',
