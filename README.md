@@ -56,7 +56,7 @@ rocket.launch()
 
 - [Secure programming in Python](http://sourceforge.net/apps/trac/flexpw/wiki/PySecure) -- this library implements things described there
 - [Secure Programming for Linux and Unix HOWTO](http://www.dwheeler.com/secure-class/Secure-Programs-HOWTO/index.html) -- the classic book
-- [PyNaCl](https://github.com/dstufft/pynacl) -- all the crypto you need
+- [PyNaCl](https://github.com/pyca/pynacl) -- all the crypto you need
 - [py-scrypt](https://bitbucket.org/mhallin/py-scrypt/src) -- derive crypto keys from passwords
 - [passlib](http://pythonhosted.org/passlib/) -- general password hashing library
 - [pyotp](https://github.com/nathforge/pyotp) -- two-factor auth is easy
