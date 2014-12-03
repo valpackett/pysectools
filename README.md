@@ -1,4 +1,4 @@
-# pysectools
+# pysectools [![on PyPI](https://img.shields.io/pypi/v/pysectools.svg?style=flat)](https://pypi.python.org/pypi/pysectools)
 
 A small Python library that contains various security things.
 
