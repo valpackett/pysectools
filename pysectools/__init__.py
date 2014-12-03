@@ -9,11 +9,13 @@
 # See the COPYING file for more details.
 #
 
+
 __all__ = [
     'cap_enter', 'drop_privileges',
     'disallow_swap', 'disallow_core_dumps',
-    'zero',
+    'zero', 'goodrandom'
 ]
+
 
 import os
 import pwd
@@ -25,12 +27,21 @@ import ctypes.util
 import getpass
 import subprocess
 
+
 try:
     _LIBC = ctypes.CDLL(ctypes.util.find_library("c"))
 except:
     class _LIBC(object):
         def mlockall(self, x):
             return -1
+
+
+try:
+    _LIBCRYPTO = ctypes.CDLL(ctypes.util.find_library("crypto"))
+except:
+    class _LIBCRYPTO(object):
+        def arc4random_buf(self, buf, size):
+            raise NotImplementedError()
 
 
 def cap_enter():
@@ -174,3 +185,30 @@ def pinentry(prompt="Enter the password: ", description=None,
         password = waitfor("D ")[2:].replace("\n", "")
     p.kill()
     return password
+
+
+def goodrandom(size=64):
+    """
+    Generates a cryptographically secure pseudorandom byte string of the
+    given size (in bytes).
+
+    If libcrypto has arc4random_buf (LibreSSL), it will be used.
+    Otherwise, it tries os.urandom and then libc/arc4random_buf (*BSD).
+
+    If everything fails, returns False.
+    """
+
+    buf = ctypes.create_string_buffer("\000" * size)
+    try:
+        _LIBCRYPTO.arc4random_buf(buf, size)
+        return buf.value
+    except:
+        try:
+            return os.urandom(size)
+        except:
+            try:
+                _LIBC.arc4random_buf(buf, size)
+                return buf.value
+            except:
+                return False
+    return False
