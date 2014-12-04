@@ -42,11 +42,14 @@ open('after.txt', 'w').write('new file!') # IOError: [Errno 94] Not permitted in
 Get a password safely using pinentry (usually comes with [GnuPG](https://www.gnupg.org/)) or [getpass](https://docs.python.org/2/library/getpass.html) if there's no pinentry:
 
 ```python
+from pysectools.pinentry import Pinentry
+pinentry = Pinentry(pinentry_path="/usr/local/bin/pinentry",
+                    fallback_to_getpass=True)
 # all parameters are optional
-pass = pysectools.pinentry(pinentry_path="/usr/local/bin/pinentry",
-                           prompt="Enter your passphrase: ",
-                           description="Launching the nuclear rocket",
-                           validator=lambda x: x.startswith("correct horse"))
+pass = pinentry.ask(prompt="Enter your passphrase: ",
+                    description="Launching the nuclear rocket",
+                    validator=lambda x: x.startswith("correct horse"))
+pinentry.close()
 rocket.authorize(pass)
 pysectools.zero(pass)
 rocket.launch()
