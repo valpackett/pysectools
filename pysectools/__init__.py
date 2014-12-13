@@ -109,27 +109,37 @@ def drop_privileges(username=None, groupname=None):
         return False
 
 
+def _force_arc4random(lib, buf, size):
+    """
+    Calls arc4random_buf on a buffer until it worked correctly.
+    (On Apple OS X, len(buf.value) is VERY OFTEN not equal to the given size)
+    """
+
+    while len(buf.value) != size:
+        lib.arc4random_buf(buf, size)
+    return buf.value
+
+
 def goodrandom(size=64):
     """
     Generates a cryptographically secure pseudorandom byte string of the
     given size (in bytes).
 
-    If libcrypto has arc4random_buf (LibreSSL), it will be used.
-    Otherwise, it tries os.urandom and then libc/arc4random_buf (*BSD).
+    It tries os.urandom first, then libcrypto/arc4random_buf (LibreSSL?) and then libc/arc4random_buf (*BSD).
 
     If everything fails, returns False.
     """
 
     buf = ctypes.create_string_buffer("\000" * size)
     try:
-        _LIBCRYPTO.arc4random_buf(buf, size)
-        return buf.value
+        return os.urandom(size)
     except:
         try:
-            return os.urandom(size)
+            _force_arc4random(_LIBCRYPTO, buf, size)
+            return buf.value
         except:
             try:
-                _LIBC.arc4random_buf(buf, size)
+                _force_arc4random(_LIBC, buf, size)
                 return buf.value
             except:
                 return False

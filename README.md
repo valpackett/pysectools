@@ -55,7 +55,7 @@ pysectools.zero(pass)
 rocket.launch()
 ```
 
-Generate a cryptographically secure pseudorandom byte string (tries [LibreSSL](http://www.libressl.org) arc4random then `/dev/urandom` then BSD arc4random):
+Generate a cryptographically secure pseudorandom byte string (tries `/dev/urandom`/`CryptGenRandom` then libcrypto ([LibreSSL](http://www.libressl.org)) arc4random then libc arc4random):
 
 ```python
 pysectools.goodrandom(32) # size in bytes
