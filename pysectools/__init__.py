@@ -130,7 +130,7 @@ def goodrandom(size=64):
     If everything fails, returns False.
     """
 
-    buf = ctypes.create_string_buffer("\000" * size)
+    buf = ctypes.create_string_buffer(b"\000" * size)
     try:
         return os.urandom(size)
     except:
