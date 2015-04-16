@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright © 2013-2014 Greg V <greg@unrelenting.technology>
+# Copyright © 2013-2015 Greg V <greg@unrelenting.technology>
 #
 # This work is free. You can redistribute it and/or modify it
 # under the terms of the
@@ -94,7 +94,7 @@ def drop_privileges(username=None, groupname=None):
 
     Returns True if successful, False otherwise.
     """
-    if os.getuid() != 0:  # Not root
+    if os.geteuid() != 0:  # Not root
         return False
     try:
         # Remove group privileges
