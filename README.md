@@ -1,4 +1,7 @@
-# pysectools [![on PyPI](https://img.shields.io/pypi/v/pysectools.svg?style=flat)](https://pypi.python.org/pypi/pysectools)
+[![on PyPI](https://img.shields.io/pypi/v/pysectools.svg?style=flat)](https://pypi.python.org/pypi/pysectools)
+[![Unlicense](https://img.shields.io/badge/un-license-green.svg?style=flat)](http://unlicense.org)
+
+# pysectools
 
 A small Python library that contains various security things.
 
@@ -75,7 +78,5 @@ pysectools.goodrandom(32) # size in bytes
 
 ## License
 
-Copyright © 2013-2014 Greg V <greg@unrelenting.technology>  
-This work is free. You can redistribute it and/or modify it under the  
-terms of the Do What The Fuck You Want To Public License, Version 2,  
-as published by Sam Hocevar. See the COPYING file for more details.
+This is free and unencumbered software released into the public domain.  
+For more information, please refer to the `UNLICENSE` file or [unlicense.org](https://unlicense.org).

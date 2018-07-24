@@ -12,7 +12,7 @@ setup(
     privileges, entering sandboxes, generating random numbers, asking for
     passwords...""",
 #    long_description="""""",
-    license="WTFPL",
+    license="Unlicense",
     author="Greg V",
     author_email="greg@unrelenting.technology",
     url="https://github.com/myfreeweb/pysectools",
