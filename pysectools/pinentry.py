@@ -16,6 +16,7 @@ def cmd_exists(cmd):
 class PinentryException(Exception): pass
 class PinentryUnavailableException(PinentryException): pass
 class PinentryClosedException(PinentryException): pass
+class PinentryErrorException(PinentryException): pass
 
 
 class Pinentry(object):
@@ -89,6 +90,8 @@ class Pinentry(object):
     def _waitfor(self, what):
         out = ""
         while not out.startswith(what):
+            if out.startswith('ERR '):
+                raise PinentryErrorException(out)
             out = self.process.stdout.readline().decode()
         return out
 
