@@ -79,6 +79,7 @@ class Pinentry(object):
             if password is not None:
                 self._comm("SETERROR %s" % self._esc(error))
             self.process.stdin.write("GETPIN\n")
+            self.process.stdin.flush()
             password = self._waitfor("D ")[2:].replace("\n", "")
         return password
 
@@ -93,6 +94,7 @@ class Pinentry(object):
 
     def _comm(self, x):
         self.process.stdin.write(x + "\n")
+        self.process.stdin.flush()
         self._waitfor("OK")
 
     def _esc(self, x):
