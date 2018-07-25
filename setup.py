@@ -7,7 +7,7 @@ except ImportError:
 
 setup(
     name="pysectools",
-    version="0.4.2",
+    version="0.5.0",
     description="""A package of security-related Python functions. Dropping
     privileges, entering sandboxes, generating random numbers, asking for
     passwords...""",
