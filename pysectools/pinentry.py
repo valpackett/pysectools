@@ -78,7 +78,7 @@ class Pinentry(object):
         while not validator(password):
             if password is not None:
                 self._comm("SETERROR %s" % self._esc(error))
-            self.process.stdin.write("GETPIN\n")
+            self.process.stdin.write("GETPIN\n".encode())
             self.process.stdin.flush()
             password = self._waitfor("D ")[2:].replace("\n", "")
         return password
@@ -89,11 +89,12 @@ class Pinentry(object):
     def _waitfor(self, what):
         out = ""
         while not out.startswith(what):
-            out = self.process.stdout.readline()
+            out = self.process.stdout.readline().decode()
         return out
 
     def _comm(self, x):
-        self.process.stdin.write(x + "\n")
+        output = (x + "\n").encode()
+        self.process.stdin.write(output)
         self.process.stdin.flush()
         self._waitfor("OK")
 
