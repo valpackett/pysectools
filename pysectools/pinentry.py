@@ -6,6 +6,7 @@ import os
 import sys
 import getpass
 import subprocess
+import urllib.parse
 
 
 def cmd_exists(cmd):
@@ -82,6 +83,12 @@ class Pinentry(object):
             self.process.stdin.write("GETPIN\n".encode())
             self.process.stdin.flush()
             password = self._waitfor("D ")[2:].replace("\n", "")
+
+        # Passphrase may contain percent-encoded entities
+        # gpg/pinentry: pinentry/pinentry.c#L392 copy_and_escape
+        # https://github.com/gpg/pinentry/blob/master/pinentry/pinentry.c#L392
+        password = urllib.parse.unquote(password)
+
         return password
 
     def _close_pinentry(self):
