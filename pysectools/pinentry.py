@@ -6,8 +6,11 @@ import os
 import sys
 import getpass
 import subprocess
-import urllib.parse
 
+try:
+    from urllib.parse import unquote as urllib_unquote
+except ImportError as err:
+    from urllib import unquote as urllib_unquote
 
 def cmd_exists(cmd):
     return subprocess.call("type " + cmd, shell=True,
@@ -87,7 +90,7 @@ class Pinentry(object):
         # Passphrase may contain percent-encoded entities
         # gpg/pinentry: pinentry/pinentry.c#L392 copy_and_escape
         # https://github.com/gpg/pinentry/blob/master/pinentry/pinentry.c#L392
-        password = urllib.parse.unquote(password)
+        password = urllib_unquote(password)
 
         return password
 
