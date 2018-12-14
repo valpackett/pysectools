@@ -8,8 +8,12 @@ import getpass
 import subprocess
 
 try:
+    # Python3 urllib
     from urllib.parse import unquote as urllib_unquote
 except ImportError as err:
+    # Python 2 urllib
+    if str(err) != 'No module named parse':
+        raise
     from urllib import unquote as urllib_unquote
 
 def cmd_exists(cmd):
