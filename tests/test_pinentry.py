@@ -115,3 +115,14 @@ class TestPinentry(unittest.TestCase):
             stdout=mock_subprocess.PIPE,
         )
 
+
+    def test_waitfor_one_term(self):
+        mock_pinentry = unittest_mock.Mock()
+        mock_subprocess = mock_pinentry.process
+        mock_subprocess.stdout.readline.side_effect = [
+            b'OK Pleased to meet you\n',
+        ]
+        test_ret1 = pysectools.pinentry.Pinentry._waitfor(
+            mock_pinentry, 'OK'
+        )
+        self.assertEqual('OK Pleased to meet you\n', test_ret1)
