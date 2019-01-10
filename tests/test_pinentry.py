@@ -117,7 +117,7 @@ class TestPinentry(unittest.TestCase):
 
 
     def test_waitfor_one_term(self):
-        mock_pinentry = unittest_mock.Mock()
+        mock_pinentry = unittest_mock.Mock(spec=pysectools.pinentry.Pinentry)
         mock_subprocess = mock_pinentry.process
         mock_subprocess.stdout.readline.side_effect = [
             b'OK Pleased to meet you\n',
