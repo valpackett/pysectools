@@ -87,9 +87,7 @@ class Pinentry(object):
         while not validator(password):
             if password is not None:
                 self._comm("SETERROR %s" % self._esc(error))
-            self.process.stdin.write("GETPIN\n".encode())
-            self.process.stdin.flush()
-            password = self._waitfor("D ")[2:].replace("\n", "")
+            password = self._comm_getpin()
 
         # Passphrase may contain percent-encoded entities
         # gpg/pinentry: pinentry/pinentry.c#L392 copy_and_escape
@@ -114,6 +112,21 @@ class Pinentry(object):
         self.process.stdin.write(output)
         self.process.stdin.flush()
         self._waitfor("OK")
+
+    def _comm_getpin(self):
+        self.process.stdin.write("GETPIN\n".encode())
+        self.process.stdin.flush()
+        out = ""
+        password = None
+        while True:
+            if out.startswith('ERR '):
+                raise PinentryErrorException(out)
+            out = self.process.stdout.readline().decode()
+            if out.startswith('D '):
+                password = out[2:].replace("\n", "")
+            if out.startswith('OK'):
+                break
+        return password
 
     def _esc(self, x):
         return x.replace("%", "%25").replace("\n", "%0A")
