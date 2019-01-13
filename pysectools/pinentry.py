@@ -7,6 +7,14 @@ import sys
 import getpass
 import subprocess
 
+try:
+    # Python3 urllib
+    from urllib.parse import unquote as urllib_unquote
+except ImportError as err:
+    # Python 2 urllib
+    if str(err) != 'No module named parse':
+        raise
+    from urllib import unquote as urllib_unquote
 
 def cmd_exists(cmd):
     return subprocess.call("type " + cmd, shell=True,
@@ -80,6 +88,12 @@ class Pinentry(object):
             if password is not None:
                 self._comm("SETERROR %s" % self._esc(error))
             password = self._comm_getpin()
+
+        # Passphrase may contain percent-encoded entities
+        # gpg/pinentry: pinentry/pinentry.c#L392 copy_and_escape
+        # https://github.com/gpg/pinentry/blob/master/pinentry/pinentry.c#L392
+        password = urllib_unquote(password)
+
         return password
 
     def _close_pinentry(self):
