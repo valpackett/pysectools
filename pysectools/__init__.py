@@ -7,6 +7,7 @@ import sys
 import resource
 import ctypes
 import ctypes.util
+import platform
 
 
 try:
@@ -18,7 +19,18 @@ except:
 
 
 try:
-    _LIBCRYPTO = ctypes.CDLL(ctypes.util.find_library("crypto"))
+    if platform.system() == 'Darwin':
+        # macOS starting with Catalina includes a poison pill when dynamically
+        # loading the 'libcrypto' library without a version specifier which
+        # aborts the process.
+        #
+        # https://someguys.blog/posts/2019-10-09-python-abort-on-macos-catalina/
+        #
+        # Since arc4randomthis is included in macOS libc, we skip
+        # trying to look it up in libcrypto.
+        raise NotImplementedError
+    else:
+        _LIBCRYPTO = ctypes.CDLL(ctypes.util.find_library("crypto"))
 except:
     class _LIBCRYPTO(object):
         def arc4random_buf(self, buf, size):
