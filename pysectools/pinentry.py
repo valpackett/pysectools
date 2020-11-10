@@ -28,6 +28,7 @@ class PinentryErrorException(PinentryException): pass
 
 
 class Pinentry(object):
+    process = None
 
     def __init__(self, pinentry_path="pinentry", fallback_to_getpass=True):
         if not cmd_exists(pinentry_path):

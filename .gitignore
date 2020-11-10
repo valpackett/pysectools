@@ -4,3 +4,6 @@
 /pysectools.egg-info
 *.pyc
 __pycache__
+.coverage
+.tox
+htmlcov/
